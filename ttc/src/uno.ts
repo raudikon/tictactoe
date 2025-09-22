@@ -1,5 +1,3 @@
-
-
 type Deck = Card[]
 type Pile = Card[]
 type Hand = Card[]

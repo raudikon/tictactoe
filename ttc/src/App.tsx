@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import {initialState, makeMove} from './tictactoe.ts'
-// import './App.css'
+import './App.css'
 
 function App() {
 
@@ -9,16 +9,16 @@ function App() {
 
   const handleClick = (row: number, col: number) => {
     if(gameState.winner){
-      setGameState(gameState)
+      return
     }
     //Update game state: place a legal move on a board, check if there is a winner.
     setGameState(makeMove(gameState, gameState.currentPlayer, row, col))
   }
 
   return (
-    <div>
-      <h1>Tic Tac Toe</h1>
-      <p>It is {gameState.currentPlayer}'s turn.</p>
+    <div className='font-serif'>
+      <h1 className='m-4'>Tic Tac Toe</h1>
+      <p className='m-4'>Current player: {gameState.currentPlayer}</p>
 
       <div>
         {
@@ -47,11 +47,11 @@ function App() {
         }
       </div>
 
-      <div>
+      <div className='m-4'>
         {gameState.winner ? <p>Player {gameState.winner} wins!</p> : null}
       </div>
 
-      <div>
+      <div className='m-4'>
         <button onClick={()=>setGameState(initialState)}>New Game</button>
       </div>
       
