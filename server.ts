@@ -1,19 +1,24 @@
 //e.g server.js
 import express from "express";
 import ViteExpress from "vite-express";
-import { makeMove, initialState } from "./src/tictactoe.ts"
+import { makeMove, initialState, scoutsGame } from "./src/tictactoe.ts"
 import type { GameState } from "./src/tictactoe.ts";
-
 const app = express();
 ViteExpress.listen(app, 3000, () => console.log("Server is listening..."));
 app.use(express.json())
 
 //state variable 
+let allGames: Record<string, GameState> = {'scout': scoutsGame, 'fractal': initialState}
+
 let myGame: GameState = initialState
 
-//get state 
 app.get('/game', (_request, response) => {
     response.send(myGame)
+})
+
+//get game state for an individual game 
+app.get('/game/:id', (request, response) => {
+    response.send(allGames[request.params.id])
 })
 
 //make a move
@@ -29,8 +34,10 @@ app.post('/move', (request, response) => {
     response.send(myGame)
 })
 
-//new game 
-app.get('/new', (request, response) => {
+//reset game 
+app.get('/reset', (request, response) => {
     myGame = initialState
     response.send(myGame)
 })
+
+//create a new game endpoint 

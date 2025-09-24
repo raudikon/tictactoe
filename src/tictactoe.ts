@@ -3,13 +3,22 @@ export type Player = 'X' | 'O'
 export type GameState = {
     currentPlayer: Player, 
     winner: Player | null, 
-    board: String[][]
+    board: String[][],
+    id: String
 }
 
 export const initialState: GameState= {
     currentPlayer: 'X',
     winner: null, 
-    board: [['_ ','_ ' ,'_ '],['_ ','_ ','_ '], ['_ ','_ ','_ ']]
+    board: [['_ ','_ ' ,'_ '],['_ ','_ ','_ '], ['_ ','_ ','_ ']],
+    id: 'initialstateid'
+}
+
+export const scoutsGame: GameState= {
+    currentPlayer: 'X',
+    winner: null, 
+    board: [['_ ','X ' ,'_ '],['X','_ ','X'], ['_ ','X ','_ ']],
+    id: 'scoutscoutscout'
 }
 
 export function makeMove(game: GameState, currentPlayer: Player, row: number, col: number): GameState 

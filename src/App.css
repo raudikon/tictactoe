@@ -42,3 +42,13 @@
 .read-the-docs {
   color: #888;
 } 
+
+.input {
+  border: 1px solid grey;
+  border-radius: 3px;
+}
+
+.homepage {
+  display: flex-col;
+
+}
