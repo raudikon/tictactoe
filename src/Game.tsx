@@ -1,53 +1,59 @@
 import { useEffect, useState } from 'react'
-import {makeMove, type GameState} from './tictactoe.ts'
+import { type GameState } from './tictactoe.ts'
 import './App.css'
-import { QueryClient, QueryClientProvider, useMutation, useQuery } from '@tanstack/react-query'
+import { useParams } from 'react-router-dom'
 
+const Game = () => {
 
-const Game = ({ id }) => {
+  const [gameState, setGameState] = useState<GameState | null>(null)
+  const { id } = useParams()
+  let GAME_ID: string = id ? id : 'game_id_missing'
 
-  const [gameState, setGameState] = useState<GameState | null>(null) 
-  const GAME_ID: string = id 
-  //make a fetch request to the server to get initial state
-  //YOU ONLY WANT TO DO USE EFFECT AFTER YOU KNOW THE ID. 
+  const getGameState = (id: string) => {
 
-  //Getting state 
-  const getInitialState = (id: string) => {
+    // what i want to happen is that this always works.
     fetch(`/game/${id}`)
-    .then(response => response.json())
-    .then(data => {setGameState(data), console.log(data)})
-    .catch(e => console.log("Getting game from server failed :{"))
+      .then(response => response.json())
+      .then(data => { setGameState(data), console.log(data) })
+      .catch(_e => console.log("Getting game from server failed :{"))
+
+    setTimeout(() => getGameState(GAME_ID), 100)
   }
 
   useEffect(() => {
-    getInitialState(GAME_ID)
+    getGameState(GAME_ID)
   }, [])
 
   //Event handlers 
   const handleClick = (row: number, col: number) => {
 
-    if(!gameState){return}
+    if (!gameState) { return }
 
-    if(gameState.winner){
+    if (gameState.board[row][col] !== '_ ' || gameState.winner) {
       return
     }
+
     fetch('/move', {
       method: 'POST',
-      headers: {    'Content-Type': 'application/json'    },
-      body: JSON.stringify([row, col])
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify([gameState.id, row, col])
     })
-    .then(response => response.json())
-    .then(data => setGameState(data))
+      .then(response => response.json())
+      .then(data => setGameState(data))
   }
 
   const handleResetGame = () => {
-    fetch("/reset")
-    .then(response => response.json())
-    .then(data => setGameState(data))
+    fetch('/reset', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify([gameState?.id])
+    })
+      .then(response => response.json())
+      .then(data => setGameState(data))
   }
 
 
-  const indices = [0,1,2]
+  const indices = [0, 1, 2]
   if (!gameState) return <div>Loading...</div>
 
   return (
@@ -58,28 +64,28 @@ const Game = ({ id }) => {
 
       <div>
         {
-        indices.map(i => 
-          <button onClick={() => handleClick(0, i)}> 
-            {gameState.board[0][i]}
-          </button>)
+          indices.map(i =>
+            <button onClick={() => handleClick(0, i)}>
+              {gameState.board[0][i]}
+            </button>)
         }
       </div>
 
       <div>
         {
-        indices.map(i => 
-          <button onClick={() => handleClick(1, i)}> 
-            {gameState.board[1][i]}
-          </button>)
+          indices.map(i =>
+            <button onClick={() => handleClick(1, i)}>
+              {gameState.board[1][i]}
+            </button>)
         }
       </div>
 
       <div>
         {
-        indices.map(i => 
-          <button onClick={() => handleClick(2, i)}> 
-            {gameState.board[2][i]}
-          </button>)
+          indices.map(i =>
+            <button onClick={() => handleClick(2, i)}>
+              {gameState.board[2][i]}
+            </button>)
         }
       </div>
 
@@ -90,10 +96,10 @@ const Game = ({ id }) => {
       <div className='m-4'>
         <button onClick={handleResetGame}>Reset</button>
       </div>
-      
+
     </div>
   )
 }
 
-  
+
 export default Game

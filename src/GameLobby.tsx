@@ -1,32 +1,40 @@
+// type GameLobbyProps = {
+//   setGameId: () => void
+// }
+import { useNavigate } from "react-router-dom"
+import { useState } from "react"
 
+function GameLobby() {
 
-type GameLobbyProps = {
-  setGameId: () => void
-}
-function GameLobby({ setGameId }: GameLobbyProps) {
-  const handleJoinGame = () => {
-    console.log('join game clicked')
+  const [name, setName] = useState('')
+  const navigate = useNavigate()
+
+  const handleGame = (name: String) => {
+    //make a fetch request to new game, with the id that the player entered. 
+    console.log('handle join game')
+    navigate(`/play/${name}`)
   }
 
   return (
     <div>
+
       <div>
         <h1>Welcome to Tic Tac Toe</h1>
       </div>
 
       <div>
-        <button>Create New Game</button>
-        <input className='input' type="text" placeholder="Enter Player Name" />
-      </div>
-
-      <div>
-        <button onClick={handleJoinGame}>Join Game</button>
+        <button
+          onClick={() => handleGame(name)}>Game Name</button>
         <input
           className='input'
           type="text"
-          placeholder="Enter Game ID" />
+          placeholder="Enter Room Name"
+          value={name}
+          onChange={e => setName(e?.target.value)}
+        />
       </div>
-    </div>
+
+    </div >
   )
 }
 
