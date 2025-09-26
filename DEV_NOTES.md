@@ -1,21 +1,65 @@
+- add see all games functionality. 
+- 
+<---------------------------->
+
+Goal: modify server to write to database whenever a player creates a game or makes a move. 
+
+state: 
+actions that can be done 
+- make a new game => add a new gamestate to the db 
+- make a move => modify an existing gamestate in the db 
 
 
-My Hypothesis:
-- My data flows are bad, such that when I create or join new games that do not exist, they aren't properly being added to my set of available games. Not sure the specific issue.
-- okay it seems to work on the backend at least.
+make a new game. 
+- create a game object then add it to database 
+params needed: name 
 
-currently
-- the router has 2 routes, game lobby and play/:id. 
-- if you go to play/:id with an existing game id, then you'll hit the game component (with certain bugs.)
-- if you go to play/:id with a random new name, you get loading page. not able to get game from server. 
+i need to query db by name, and then send it if it exists. if it doesnt exist, i will create it and send it into db. 
 
-what i want (#1): 
-- if you go to play/:id with a random new name, it creates a game and lets you play it. 
+i think ur WRITING to the server every 5 secs, i want to get FROM the server every 5 secs. 
 
-what this would take: 
-- modify logic in Game.tsx 
-    * if you successfully fetched game, serve it. 
-    * if not, then create a new game object on the server, and serve it. 
-        * in getInitialState: 
-            - catch(e => )
+lets put server response if there is a game, so it doesnt keep writing. 
+
+<---------------------------->
+x implement reset 
+implement tie detection 
+clean up a little bit? 
+implement show all games. 
+
+dont understand settimeout vs setinterval: 
+setinterval doesnt pus calls on the stack but simply runs every interval or gets put on the stack every so often? 
+settimeout pushes call on the stack and says call it when time runs out 
+
+
+
+how settimeout and setinterval cause memory leak
+what is memory leak 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

@@ -14,14 +14,15 @@ const Game = () => {
     // what i want to happen is that this always works.
     fetch(`/game/${id}`)
       .then(response => response.json())
-      .then(data => { setGameState(data), console.log(data) })
+      .then(data => { setGameState(data), console.log('Got game succesfully :)') })
       .catch(_e => console.log("Getting game from server failed :{"))
 
-    setTimeout(() => getGameState(GAME_ID), 100)
+    // setInterval(() => getGameState(GAME_ID), 5000)
   }
 
   useEffect(() => {
     getGameState(GAME_ID)
+    setInterval(() => getGameState(GAME_ID), 100)
   }, [])
 
   //Event handlers 
@@ -36,7 +37,7 @@ const Game = () => {
     fetch('/move', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify([gameState.id, row, col])
+      body: JSON.stringify([gameState.playerName, row, col])
     })
       .then(response => response.json())
       .then(data => setGameState(data))
@@ -46,7 +47,7 @@ const Game = () => {
     fetch('/reset', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify([gameState?.id])
+      body: JSON.stringify([gameState?.playerName])
     })
       .then(response => response.json())
       .then(data => setGameState(data))
@@ -60,7 +61,7 @@ const Game = () => {
     <div className='font-serif'>
       <h1 className='m-4'>Tic Tac Toe</h1>
       <p className='m-4'>Current player: {gameState.currentPlayer}</p>
-      <p className='m-4'>Game ID: {gameState.id}</p>
+      <p className='m-4'>Player Name: {gameState.playerName}</p>
 
       <div>
         {

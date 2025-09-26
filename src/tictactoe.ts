@@ -4,7 +4,6 @@ export type GameState = {
     currentPlayer: Player,
     winner: Player | null,
     board: String[][],
-    id: String,
     playerName: String
 }
 
@@ -12,7 +11,6 @@ export const initialState: GameState = {
     currentPlayer: 'X',
     winner: null,
     board: [['_ ', '_ ', '_ '], ['_ ', '_ ', '_ '], ['_ ', '_ ', '_ ']],
-    id: 'initialstateid',
     playerName: 'Initial State'
 }
 
@@ -20,12 +18,12 @@ export const scoutsGame: GameState = {
     currentPlayer: 'X',
     winner: null,
     board: [['_ ', 'X ', '_ '], ['X', '_ ', 'X'], ['_ ', 'X ', '_ ']],
-    id: 'scoutscoutscout',
     playerName: 'Scoujian'
 }
 
-export function makeMove(game: GameState, currentPlayer: Player, row: number, col: number): GameState {
+export function makeMove(game: GameState, row: number, col: number): GameState {
     let newState = structuredClone(game)
+    let currentPlayer = game.currentPlayer
 
     //make move
     newState.board[row][col] = game.board[row][col] === '_ ' ? currentPlayer : game.board[row][col]
